@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const validateEmail = function (email) {
+const validateEmail = (email) => {
   const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   return re.test(email);
 };
@@ -28,21 +28,13 @@ const userSchema = mongoose.Schema({
       "Please fill a valid email address",
     ],
     validate: {
-      validator: function (v) {
+      validator: (v) => {
         return v.includes("@");
       },
       message: 'Email address must contain "@"',
     },
   },
-  password: {
-    type: String,
-    required: true,
-    minlength: [6, "Password must be at least 6 characters long"],
-    validate: {
-      validator: (v) => /\d/.test(v),
-      message: "Password must contain at least one number",
-    },
-  },
+  password: { type: String, required: true },
   boughtTickets: { type: Array, required: false },
   moneyBalance: { type: Number, required: false, default: 1000 },
 });

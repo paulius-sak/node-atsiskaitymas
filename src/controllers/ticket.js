@@ -5,11 +5,7 @@ const CREATE_TICKET = async (req, res) => {
   try {
     const ticket = new TicketModel({
       ticketId: uuidv4(),
-      title: req.body.title,
-      price: req.body.price,
-      fromLocation: req.body.fromLocation,
-      toLocation: req.body.toLocation,
-      toLocationPhotoUrl: req.body.toLocationPhotoUrl,
+      ...req.body
     });
 
     const response = await ticket.save();
@@ -51,7 +47,7 @@ const GET_TICKET_BY_ID = async (req, res) => {
   }
 };
 
-const DELETE_TICKET = async (req, res) => {
+const DELETE_TICKET_BY_ID = async (req, res) => {
   try {
     const deletedTicket = await TicketModel.findOneAndDelete({
       ticketId: req.params.ticketId,
@@ -78,5 +74,5 @@ export {
   CREATE_TICKET,
   GET_ALL_TICKETS,
   GET_TICKET_BY_ID,
-  DELETE_TICKET
+  DELETE_TICKET_BY_ID
 };

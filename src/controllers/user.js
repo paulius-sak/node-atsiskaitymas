@@ -63,9 +63,9 @@ const LOG_IN = async (req, res) => {
     );
 
     return res.status(200).json({
+      message: "User log-in successful",
       jwt: jwt_token,
       jwt_refresh_token: jwt_refresh_token,
-      message: "User log-in successful",
     });
   } catch (err) {
     console.log("handled error: ", err);
@@ -145,13 +145,14 @@ const GET_USERS_BY_ID_WITH_TICKETS = async (req, res) => {
 
     const userWithTickets = await UserModel.aggregate([
       { $match: { id: userId } },
+
       {
         $lookup: {
           from: "tickets",
           localField: "boughtTickets",
           foreignField: "ticketId",
-          as: "bought_tickets_agg"
-        }
+          as: "bought_tickets_agg",
+        },
       }
     ]);
 
@@ -161,7 +162,7 @@ const GET_USERS_BY_ID_WITH_TICKETS = async (req, res) => {
       });
     }
 
-    return res.json({ user: userWithTickets[0] })
+    return res.json({ user: userWithTickets });
   } catch (err) {
     console.log("handled error: ", err);
     return res.status(500).json({ message: "error happened" });

@@ -9,10 +9,12 @@ import {
   GET_USERS_BY_ID_WITH_TICKETS,
 } from "../controllers/user.js";
 import auth from "../middleware/auth.js";
+import validation from "../middleware/validation.js"
+import userSchema from "../validationSchema/user.js";
 
 const router = express.Router();
 
-router.post("/users", SIGN_IN);
+router.post("/users", validation(userSchema), SIGN_IN);
 router.post("/users/login", LOG_IN);
 
 router.get("/users/refresh", REFRESH_TOKEN);
