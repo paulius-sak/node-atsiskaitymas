@@ -91,17 +91,22 @@ const REFRESH_TOKEN = async (req, res) => {
           });
         }
 
-        // Jei raktas yra tinkamas, sukuriame naują JWT
         const jwt_token = jwt.sign(
           { userEmail: decoded.userEmail, user_id: decoded.user_id },
           process.env.JWT_SECRET,
           { expiresIn: "2h" }
         );
 
+        const jwt_refresh_token = jwt.sign(
+          { userEmail: decoded.userEmail, user_id: decoded.user_id },
+          process.env.JWT_REFRESH_SECRET,
+          { expiresIn: "24h" }
+        );
+
         return res.status(200).json({
+          message: "User JWT refreshed successfully",
           jwt: jwt_token,
           jwt_refresh_token: jwt_refresh_token,
-          message: "User JWT refreshed successfully",
         });
       }
     );
@@ -153,7 +158,7 @@ const GET_USERS_BY_ID_WITH_TICKETS = async (req, res) => {
           foreignField: "ticketId",
           as: "bought_tickets_agg",
         },
-      }
+      },
     ]);
 
     if (!userWithTickets.length) {
